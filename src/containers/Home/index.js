@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import openSocket from 'socket.io-client';
 
-import { createGame } from '../../actions/Game'
+import { createGame, fetchGames } from '../../actions/Game'
 
 import './styles.scss'
-const  socket = openSocket('http://localhost:8080');
 
-export const Home = ({ games, createGame }) => {
+export const Home = ({ games, createGame, fetchGames }) => {
   let history = useHistory();
   const [newName, setNewName] = useState('')
 
+  useEffect(() => {
+    fetchGames()
+  }, [fetchGames])
+
   const handleCreateGame = () => {
-    socket.emit('create game', 'newName');
     createGame(newName, () =>
       history.push(`/game/${newName}`)
     )
@@ -48,6 +49,7 @@ export const Home = ({ games, createGame }) => {
                 ? games.map((game, i) =>
                     <Link
                       key={i}
+                      className="block"
                       to={`/game/${game.name}`}
                     >
                       {game.name}
@@ -70,6 +72,7 @@ function mapStateToProps({ game }) {
 
 export default connect(
   mapStateToProps, {
-    createGame
+    createGame,
+    fetchGames
   }
 )(Home)

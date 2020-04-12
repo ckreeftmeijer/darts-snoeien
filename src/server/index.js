@@ -1,47 +1,80 @@
-const path = require('path');
 const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const http = require('http')
+const socketServer =require('socket.io')
+
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-const port = process.env.PORT || 8080;
 
-const  GameSchema  = require("../models/GameSchema");
-const  connect  = require("./dbconnect");
+const gameModel = require('../models/GameModel')
 
-// const  GameEvents  = require("./eventHandlers/Game");
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json())
 
-app.use(express.static(path.join(__dirname, '../../build')));
-console.log(__dirname)
-app.get('/', (req, res, next) => res.sendFile(__dirname + './index.html'));
+require('./routes/gameRoutes')(app);
 
-// // sockets test
-// io.on('connection', socket => socket.emit('hello', { message: 'hello from server!' }));
+// MONGOOSE CONNECT
+// ===========================================================================
+const connectionString = 'mongodb+srv://ckreeftmeijer:Chr1$tiaan@cluster0-cocre.azure.mongodb.net/test?retryWrites=true&w=majority'
+mongoose.connect(connectionString, { useNewUrlParser: true })
 
-//setup event listener
-io.on("connection", socket  =>  {
-    console.log("user connected");
-    socket.on("disconnect", function() {
-    console.log("user disconnected");
-    });
+var db = mongoose.connection
+db.on('error', ()=> {console.log( '--- FAILED to connect to mongoose')})
+db.once('open', () => {
+	console.log( '+++ connected to mongoose')
+})
 
-    io.sockets.on('connection', function (socket) {
-  });
+var server = http.createServer(app);
+var io = socketServer(server);
+server.listen(8080)
+
+
+/***************************************************************************************** */
+/* Socket logic starts here																   */
+/***************************************************************************************** */
+const connections = [];
+io.on('connection', function (socket) {
+	console.log("Connected to Socket!!"+ socket.id)
+	connections.push(socket)
+	socket.on('disconnect', function(){
+		console.log('Disconnected - '+ socket.id);
+	});
+
+  socket.on('addItem',(addData)=>{
+		var todoItem = new gameModel({
+			itemId:addData.id,
+			item:addData.item,
+			completed: addData.completed
+		})
+
+		todoItem.save((err,result)=> {
+			if (err) {console.log("---Gethyl ADD NEW ITEM failed!! " + err)}
+			else {
+				// connections.forEach((currentConnection)=>{
+				// 	currentConnection.emit('itemAdded',addData)
+				// })
+				io.emit('itemAdded',addData)
+
+				console.log({message:"+++Gethyl ADD NEW ITEM worked!!"})
+			}
+		})
+	})
+
+	socket.on('markItem',(markedItem)=>{
+		var condition   = {itemId:markedItem.id},
+			updateValue = {completed:markedItem.completed}
+
+		gameModel.update(condition,updateValue,(err,result)=>{
+			if (err) {console.log("---Gethyl MARK COMPLETE failed!! " + err)}
+			else {
+				// connections.forEach((currentConnection)=>{
+				// 	currentConnection.emit('itemMarked',markedItem)
+				// })
+				io.emit('itemMarked',markedItem)
+
+				console.log({message:"+++Gethyl MARK COMPLETE worked!!"})
+			}
+		})
+	})
+
 });
-
-io.on("create game", function(name) {
-    console.log("game name: "  +  name);
-    //broadcast message to everyone in port:5000 except yourself.
-    io.broadcast.emit("received", { name: name  });
-
-    //save chat to the database
-    connect.then(db  =>  {
-    console.log("connected correctly to the server");
-
-    let newGame  =  new GameSchema(name);
-    newGame.save();
-    });
-});
-
-
-
-server.listen(port);

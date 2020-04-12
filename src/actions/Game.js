@@ -1,26 +1,69 @@
-export const FETCH_GAME = "FETCH_GAME";
-export const FETCH_GAMES = "FETCH_GAMES";
-export const CREATE_GAME = "CREATE_GAME";
+import axios from "axios";
+
 export const DELETE_GAME = "DELETE_GAME";
 export const RESET_GAME = "RESET_GAME";
 
+export const CREATE_GAME = "CREATE_GAME";
+export const CREATE_GAME_SUCCESS = "CREATE_GAME_SUCCESS";
+export const CREATE_GAME_FAILURE = "CREATE_GAME_FAILURE";
+
+export const FETCH_GAME = "FETCH_GAME";
+export const FETCH_GAME_SUCCESS = "FETCH_GAME_SUCCESS";
+export const FETCH_GAME_FAILURE = "FETCH_GAME_FAILURE";
+
+export const FETCH_GAMES = "FETCH_GAMES";
+export const FETCH_GAMES_SUCCESS = "FETCH_GAMES_SUCCESS";
+export const FETCH_GAMES_FAILURE = "FETCH_GAMES_FAILURE";
+
 export const UPDATE_PLAYER_SCORE = "UPDATE_PLAYER_SCORE";
 
-export const fetchGame = name => ({
-  type: FETCH_GAME,
-  payload: name
-});
+export const fetchGame = (name) => dispatch => {
+  dispatch({
+    type: FETCH_GAME,
+    payload: name
+  });
+  axios.get(`/api/game/${name}`).then(
+    data => {
+      dispatch({
+        type: FETCH_GAME_SUCCESS,
+        payload: data
+      })
+    },
+    err => dispatch({ type: FETCH_GAME_FAILURE, payload: err })
+  )
+};
 
-export const fetchGames = () => ({
-  type: FETCH_GAMES,
-});
+export const fetchGames = (name) => dispatch => {
+  dispatch({
+    type: FETCH_GAMES,
+    payload: name
+  });
+  axios.get(`/api/games`).then(
+    data => {
+      dispatch({
+        type: FETCH_GAMES_SUCCESS,
+        payload: data
+      })
+    },
+    err => dispatch({ type: FETCH_GAMES_FAILURE, payload: err })
+  )
+};
 
 export const createGame = (name, cb) => dispatch => {
   dispatch({
     type: CREATE_GAME,
     payload: name
   });
-  cb && setTimeout(() => cb(), 1000)
+  axios.post(`/api/game`, { name }).then(
+    data => {
+      dispatch({
+        type: CREATE_GAME_SUCCESS,
+        payload: data
+      })
+      cb && cb(data)
+    },
+    err => dispatch({ type: CREATE_GAME_FAILURE, payload: err })
+  )
 };
 
 

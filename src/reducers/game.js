@@ -1,73 +1,85 @@
 import {
-  FETCH_GAME, CREATE_GAME, DELETE_GAME, RESET_GAME,
+  FETCH_GAME, FETCH_GAME_SUCCESS, FETCH_GAME_FAILURE,
+  FETCH_GAMES, FETCH_GAMES_SUCCESS, FETCH_GAMES_FAILURE,
+  DELETE_GAME, RESET_GAME,
+  CREATE_GAME, CREATE_GAME_SUCCESS, CREATE_GAME_FAILURE,
   UPDATE_PLAYER_SCORE
 } from "../actions/Game";
 
 const INITIAL_STATE = {
-  games: [
-    {
-      name: 'league',
-      currentPlayer: 0,
-      players: [
-        {name: 'Player 1', score: 501},
-        {name: 'Player 2', score: 501},
-      ]
-    }
-  ],
+  games: undefined,
   game: undefined,
   err: undefined,
+  loading: {
+    game: false,
+  },
+  error: {
+    game: false,
+    games: false,
+  }
 };
-
-const startGame = {
-  currentPlayer: 0,
-  players: [
-    {name: 'Player 1', score: 501},
-    {name: 'Player 2', score: 501},
-  ]
-}
 
 export default function(state = INITIAL_STATE, action) {
 
   switch (action.type) {
     case FETCH_GAME:
-      let game, err
-      const games = state.games
+      return {
+        ...state,
+        loading: {...state.loading, game: true}
+      };
+    case FETCH_GAME_SUCCESS:
+      return {
+        ...state,
+        game: action.payload.data,
+        error: undefined,
+        loading: {...state.loading, game: false}
+      };
+    case FETCH_GAME_FAILURE:
+      return {
+        ...state,
+        game: undefined,
+        error: action.payload,
+        loading: {...state.loading, game: false}
+      };
 
-      if (games && games.length) {
-        game = games.find(g => g.name === action.payload)
-        if (!game) {
-          err = 'Er is geen spel met deze naam gevonden'
-        } else {
-          err = undefined
-        }
-      } else {
-        err = 'Geen spellen gevonden'
-      }
-       return {
-         ...state,
-         game,
-         err
-       };
+    case FETCH_GAMES:
+      return {
+        ...state,
+        loading: {...state.loading, games: true}
+      };
+    case FETCH_GAMES_SUCCESS:
+      return {
+        ...state,
+        games: action.payload.data,
+        error: undefined,
+        loading: {...state.loading, games: false}
+      };
+    case FETCH_GAMES_FAILURE:
+      return {
+        ...state,
+        games: undefined,
+        error: action.payload,
+        loading: {...state.loading, games: false}
+      };
+
 
      case CREATE_GAME:
-      let error
-      const name = action.payload
-      const gamesList = [...state.games]
-      const gameIdx = gamesList.findIndex(x => x.name === name)
-      if (gameIdx === -1) {
-        gamesList.push({
-          name,
-          ...startGame
-        })
-        error = undefined
-      } else {
-        error = 'Deze naam bestaat al'
-      }
-
        return {
          ...state,
-         games: gamesList,
-         err: error
+         game: undefined,
+         error: undefined
+       };
+     case CREATE_GAME_SUCCESS:
+       return {
+         ...state,
+         game: action.payload.data.game,
+         error: undefined
+       };
+     case CREATE_GAME_FAILURE:
+       return {
+         ...state,
+         game: undefined,
+         error: action.payload
        };
 
      case DELETE_GAME:
