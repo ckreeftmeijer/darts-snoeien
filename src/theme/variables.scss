@@ -1,0 +1,174 @@
+/*
+ *               _
+ *              | |
+ *      ___ ___ | | ___  _ __ ___
+ *     / __/ _ \| |/ _ \| '__/ __|
+ *    | (_| (_) | | (_) | |  \__ \
+ *     \___\___/|_|\___/|_|  |___/
+ *
+ */
+
+ /* Primary */
+ $nz-green: #d71730 !default;
+ $nz-green-dark: #00a82d !default;
+ $nz-green-light: #69CC84 !default;
+ $nz-green-lighter: #b2e4c0 !default;
+ $nz-blue: #32329c !default;
+ $nz-blue-dark: #161699 !default;
+ $nz-blue-light: #6666b5 !default;
+ $nz-blue-lighter: #9999cd !default;
+
+
+ /* Secondary */
+ $nz-cyan: #2ac6bb !default;
+ $nz-cyan-dark: #25b0a6 !default;
+ $nz-cyan-light: #82eae2 !default;
+ $nz-cyan-lighter: #97eee7 !default;
+ $nz-magenta: #f14cad !default;
+ $nz-magenta-dark: #ed1996 !default;
+ $nz-magenta-light: #f57fc5 !default;
+ $nz-magenta-lighter: #f9b2dc !default;
+
+ /* Grays */
+ $white: #fff;
+ $gray-lightest: #F0F0F0 !default;
+ $gray-lighter: #b2b2b2 !default;
+ $gray-light: #999999 !default;
+ $gray: #7f7f7f !default;
+ $gray-dark: #4c4c4c !default;
+ $gray-darker: #4c4c4c !default;
+ $gray-black: #323232 !default;
+ $black: #181818;
+
+ /* Other colors */
+ $dark-sea-green: #22504F;
+ $light-sea-green: #55AEA6;
+ $data-explanation: #fdf7e2;
+ $error-red: red;
+
+
+/* Box shadows */
+$box-shadow: 0 2px 10px 1px rgba(0,0,0,0.15);
+
+
+/*
+ *                _     _
+ *               (_)   | |
+ *      __ _ _ __ _  __| |
+ *     / _` | '__| |/ _` |
+ *    | (_| | |  | | (_| |
+ *     \__, |_|  |_|\__,_|
+ *      __/ |
+ *     |___/
+ */
+
+/* Breakpoints */
+$min-width-support: 320px !default;
+
+$break-xxs: 425px !default; /* Mobile */
+$break-xs: 768px !default; /* Tablet */
+$break-sm: 1024px !default; /* Desktop */
+$break-md: 1280px !default;
+$break-lg: 1366px !default;
+$break-xl: 1440px !default;
+$break-xxl: 1900px !default;
+
+$break-xxs-max: 424px !default; /* Mobile */
+$break-xs-max: 767px !default; /* Tablet */
+$break-sm-max: 1023px !default; /* Desktop */
+$break-md-max: 1279px !default;
+$break-lg-max: 1365px !default;
+$break-xl-max: 1439px !default;
+$break-xxl-max: 1899px !default;
+
+
+
+
+/* Containers */
+$container-xl: 1170px !default;
+$container-lg: 994px !default;
+$container-md: 738px !default;
+$container-sm: 395px !default;
+
+/* Spacers */
+$spacer: 6px !default;
+$gutter: 30px !default;
+
+
+/*
+ *     _                                           _
+ *    | |                                         | |
+ *    | |_ _   _ _ __   ___   __ _ _ __ __ _ _ __ | |__  _   _
+ *    | __| | | | '_ \ / _ \ / _` | '__/ _` | '_ \| '_ \| | | |
+ *    | |_| |_| | |_) | (_) | (_| | | | (_| | |_) | | | | |_| |
+ *     \__|\__, | .__/ \___/ \__, |_|  \__,_| .__/|_| |_|\__, |
+ *          __/ | |           __/ |         | |           __/ |
+ *         |___/|_|          |___/          |_|          |___/
+ */
+
+/* Font sizes */
+$font-size-root: 16px !default; /* Pixel value applied to <html> to define 1rem */
+$font-size-base: 1rem !default;
+$font-size-xxl: 2rem !default;
+$font-size-xl: 1.5rem !default;
+$font-size-lg: 1.15rem !default;
+$font-size-sm: 0.875rem !default;
+$font-size-xs: 0.75rem !default;
+$font-color-base: #323232 !default;
+$line-height-base: 1.5 !default;
+
+/* Headings */
+$font-size-h1: 2.5rem !default;
+$font-size-h2: 2rem !default;
+$font-size-h3: 1.75rem !default;
+$font-size-h4: 1.5rem !default;
+$font-size-h5: 1.15rem !default;
+$font-size-h6: 1rem !default;
+$headings-font-weight: inherit;
+$headings-line-height: 1.2;
+$headings-color: inherit;
+$headings-margin: 1.2rem 0 0;
+
+/* Vertical rhythm unit */
+$vr: calc(1rem / #{$line-height-base}) !default;
+
+
+/*
+ *                _           _
+ *               (_)         | |
+ *     _____      _ _ __   __| | _____  __
+ *    |_  / _____| | '_ \ / _` |/ _ \ \/ /
+ *     / / |____|| | | | | (_| |  __/>  <
+ *    /___|      |_|_| |_|\__,_|\___/_/\_\
+ *
+ */
+
+$z-loading-overlay: 10 !default;
+$z-fixed-cell: 700 !default;
+
+$z-triangle: 900 !default;
+$z-sticky: 1300 !default;
+$z-search-overlay: 1350 !default;
+$z-searchbar: 1380 !default;
+$z-dropdown: 1400 !default;
+$z-popover: 1420 !default;
+$z-subnav: 1450 !default;
+$z-nav: 1500 !default;
+$z-modal-bg: 1600 !default;
+$z-modal: 1700 !default;
+$z-tooltip: 1800 !default;
+
+/*
+ *
+ *                    _     _ _
+ *                   | |   | (_)
+ *    ____   ____  __| | __| |_ ____   ____
+ *   | __ \ / _  |/ _  |/ _  | |  _ \ / _  |
+ *   | |_) | (_| | (_| | (_| | | | | | (_| |
+ *   |  __/ \____|\____|\____|_|_| |_|\__  |
+ *   | |                               __/ |
+ *   |_|                              |___/
+ *
+ */
+
+$padding: 16px;

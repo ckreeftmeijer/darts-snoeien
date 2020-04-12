@@ -1,0 +1,129 @@
+.title {
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+}
+/* Clip text element */
+.clip-text {
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    margin: .25em;
+    padding: .5em .75em;
+    text-align: center;
+    background-image: url('./snoeien.jpg');
+    /* Color fallback */
+    color: #fff;
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+.clip-text:before,
+.clip-text:after {
+    position: absolute;
+    content: '';
+}
+
+/* Background */
+.clip-text:before {
+    z-index: -2;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: inherit;
+}
+
+/* Text Background (black zone) */
+.clip-text:after {
+    position: absolute;
+    z-index: -1;
+    top: .125em;
+    right: .125em;
+    bottom: .125em;
+    left: .125em;
+    background-color: #000;
+}
+
+/* Change the background position to display letter when the black zone isn't here */
+.clip-text--no-textzone:before {
+    background-position: -.75em 1em;
+}
+
+.clip-text--no-textzone:after {
+    content: none;
+}
+
+/* Use Background-size cover for photo background and no-repeat background */
+.clip-text--cover,
+.clip-text--cover:before {
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+            background-size: cover;
+  background-position: 50% 50%;
+}
+
+/* Background image from http://thepatternlibrary.com/ and http://lorempixel.com */
+.clip-text_one {
+
+}
+
+.clip-text_two {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_tree {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_four {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_five {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_six {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_seven {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_eight {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_nine {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_ten {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_eleven {
+    background-image: url('./snoeien.jpg');
+    background-size: cover;
+}
+
+.clip-text_twelve {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_thirteen {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_fourteen {
+    background-image: url('./snoeien.jpg');
+}
+
+.clip-text_fifteen {
+    background-image: url('./snoeien.jpg');
+}

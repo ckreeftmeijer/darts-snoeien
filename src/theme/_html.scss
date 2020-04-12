@@ -1,0 +1,397 @@
+@import './variables.scss';
+
+/* General */
+
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-size: $font-size-root;
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif, Arial, Verdana;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  color: white;
+  background: black;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page elements */
+
+header {
+  z-index: $z-nav;
+  flex: none;
+  padding: 20px;
+  border-bottom: 1px solid white;
+}
+
+main {
+  flex: 1 0 auto;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Typography */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: $headings-margin;
+  color: $headings-color;
+  font-weight: $headings-font-weight;
+  line-height: $headings-line-height;
+}
+
+h1 {
+  font-size: $font-size-h1;
+}
+
+h2 {
+  font-size: $font-size-h2;
+}
+
+h3 {
+  font-size: $font-size-h3;
+}
+
+h4 {
+  font-size: $font-size-h4;
+}
+
+h5 {
+  font-size: $font-size-h5;
+}
+
+h6 {
+  font-size: $font-size-h6;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: $vr;
+  padding-top: calc(0.5 * #{$vr});
+  text-align: justify;
+  font-size: $font-size-sm;
+  transition: font-size 0.25s;
+}
+
+sup {
+  top: -0.25rem;
+}
+
+sub {
+  bottom: -0.25rem;
+}
+
+.line-height-normal {
+  line-height: 1;
+}
+
+
+/* Inputs */
+
+input {
+  color: black;
+  width: 100%;
+  outline: none !important;
+
+  &:disabled {
+    background: $gray-lightest !important;
+  }
+
+  &:read-only {
+    background: hsl(0,0%,90%) !important;
+    color: hsl(0,0%,60%) !important;
+  }
+
+  &[type="text"], &[type="password"], &[type="date"], &[type="email"] {
+    padding: 6px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+    border-radius: 4px;
+    outline: none !important;
+  }
+}
+
+input[type="date"] {
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif, Arial, Verdana;
+  font-size: 0.9rem;
+}
+
+select {
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif, Arial, Verdana;
+  outline: none;
+}
+
+textarea {
+  padding: 6px;
+  width: 100%;
+  border: solid 1px #888;
+  background: #fff;
+  border-radius: 4px;
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: $nz-green;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.button {
+  display: inline-block;
+  background: $nz-green;
+  padding: 8px 30px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  font-weight: 500;
+  outline: none;
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif, Arial, Verdana;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    background: $nz-green-light;
+  }
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+
+  &--full-width {
+    width: 100%;
+    text-align: center;
+  }
+
+  &--small {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  &--gray {
+    pointer-events: none;
+    background: $gray-lighter;
+  }
+
+  &--blue {
+    color: $white;
+    background: $nz-blue-dark;
+
+    &:hover {
+      cursor: pointer;
+      background: #10106c;
+    }
+
+    &:active {
+      position: relative;
+      top: 1px;
+    }
+
+    &--inverted {
+      color: $nz-blue-dark;
+      border: 1px solid $nz-blue-dark;
+      background: $white;
+
+      &:hover {
+        cursor: pointer;
+        background: $white;
+      }
+
+      &:active {
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
+
+  &--disabled {
+    background: $gray-light;
+
+    &:hover {
+      background: $gray-light;
+      cursor: not-allowed!important;
+    }
+  }
+}
+
+.delete {
+  cursor: pointer;
+
+  &:hover {
+    color: red !important;
+    border-color: red !important;
+  }
+}
+
+.tag {
+  border: 1px solid $nz-green;
+  color: $nz-green;
+  padding: 3px 6px;
+  display: inline-block;
+  border-radius: 4px;
+  transition: 0.2s;
+  margin-right: 8px;
+  font-weight: 500;
+
+  a {
+    text-decoration: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background: $nz-green;
+    color: $white !important;
+
+    & a {
+      color: $white !important;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.field-container {
+  position: relative;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: bold;
+}
+
+.form-error {
+  position: absolute;
+  right: 0px;
+  color: red;
+  top: 12px;
+  font-size: $font-size-xs;
+  z-index: 5;
+}
+
+/* Flex helpers */
+.flex {
+  display: flex;
+
+  &--end {
+    justify-content: flex-end;
+  }
+
+  &--center {
+    justify-content: center;
+    align-items: center;
+  }
+
+  &--space-between {
+    justify-content: space-between;
+  }
+
+  &--align-center {
+    align-items: center;
+  }
+
+  &--column {
+    flex-direction: column;
+  }
+
+  &--grow {
+    flex-grow: 1;
+  }
+}
+
+/* React Tooltip Lite */
+
+.react-tooltip-lite--smaller {
+  .react-tooltip-lite {
+    max-width: 50%!important;
+    font-size: 14px;
+  }
+}
+
+.react-tooltip-lite {
+  border-radius: 4px;
+  background: $gray-black;
+  color: white;
+}
+
+.react-tooltip-lite {
+  z-index: $z-tooltip !important;
+}
+
+/* Data Explanation */
+
+.data-explanation {
+  margin-top: 24px;
+  background: #fdf7e2;
+  padding: 18px;
+
+  &.highlight {
+    border-radius: 3px;
+    animation: highlight 300ms ease-out;
+
+    @keyframes highlight {
+      0% {
+        background-color: red;
+      }
+      100% {
+        background-color: $data-explanation;
+      }
+    }
+  }
+}
+
+
+/* Reactour */
+
+#___reactour {
+  *:focus {
+    outline: none!important;
+  }
+}
+
+/* React Modal */
+
+.ReactModal__Body--open {
+  overflow-y: hidden;
+}
+
+.ReactModal__Overlay {
+  background: rgba(0,0,0,0.7) !important;
+  z-index: $z-modal;
+  touch-action: none
+}
+
+.ReactModal__Content {
+  padding: 0px !important;
+}
+
+/* React-collapse */
+
+.ReactCollapse--collapse {
+  transition: height 400ms;
+}
+
+.Select-menu-outer {
+  z-index: 1999 !important;
+}

@@ -1,0 +1,95 @@
+@import '../../theme/variables.scss';
+
+.tab-filter-container{
+  z-index: 1;
+}
+
+.tab-filter {
+    position: relative;
+    transition: all 350ms cubic-bezier(0,.95,.38,.98);
+    overflow: hidden;
+    display: inline-grid;
+    background: white;
+    border-radius: 4px;
+    user-select: none;
+
+  svg {
+    margin-left: 4px;
+  }
+
+  &__tab {
+    border: 1px solid black;
+    background: black;
+    border-right: none;
+    padding: 4px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    color: #f0f0f0;
+    position: relative;
+
+    @media(min-width: $break-lg) {
+      padding: 4px 6px;
+    }
+
+    @media(min-width: $break-xl) {
+      padding: 4px 14px;
+    }
+
+    @media(min-width: $break-xxl) {
+      padding: 4px 18px;
+    }
+
+    &-text {
+      position: relative;
+      z-index: 400;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+
+      @media (max-width: $break-xxl) and (min-width: $break-sm) {
+        font-size: 10px;
+      }
+    }
+    &:first-of-type {
+      border-radius: 4px 0px 0px 4px;
+    }
+
+    &:last-of-type {
+      border-right: 1px solid #f0f0f0;
+      border-radius: 0px 4px 4px 0px;
+    }
+
+    &--active {
+      background: white;
+      color: black;
+
+      .tab-filter__tab-text{
+        color: black;
+      }
+    }
+  }
+
+  &__background {
+    top: 0;
+    position: absolute;
+    background: white;
+    transition: all 350ms cubic-bezier(0,.95,.38,.98);
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    z-index: 300;
+  }
+
+  &__blocked {
+    color: $gray-light;
+    svg {
+      display: block;
+      position: absolute;
+      right: 0px;
+      top: -2px;
+    }
+  }
+}

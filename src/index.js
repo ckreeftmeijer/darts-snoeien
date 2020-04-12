@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import io from 'socket.io-client';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+const socket = io();
+// sockets test
+socket.on('hello', ({ message }) => alert(message));
 
 ReactDOM.render(
   <React.StrictMode>
