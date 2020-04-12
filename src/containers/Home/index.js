@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
 import { connect } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
+import openSocket from 'socket.io-client';
 
 import { createGame } from '../../actions/Game'
 
 import './styles.scss'
+const io = require('socket.io')
+const  socket = openSocket('http://localhost:8080');
 
 export const Home = ({ games, createGame }) => {
   let history = useHistory();
   const [newName, setNewName] = useState('')
 
   const handleCreateGame = () => {
+    socket.emit('create game', 'newName');
+    io.emit('create game', newName);
     createGame(newName, () =>
       history.push(`/game/${newName}`)
     )
