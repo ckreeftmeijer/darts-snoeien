@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const http = require('http')
 const socketServer =require('socket.io')
+const path = require('path');
 
 const app = express();
 
@@ -13,7 +14,18 @@ const Game = mongoose.model('Game');
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 
+
 require('./routes/gameRoutes')(app);
+
+// Serve the static files from the React app
+app.use('/', express.static('build'));
+
+// Handles any requests that don't match the ones above
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+
 
 // MONGOOSE CONNECT
 // ===========================================================================
