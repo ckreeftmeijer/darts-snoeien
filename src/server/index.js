@@ -2,8 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const http = require('http')
+var https = require('https');
 const socketServer =require('socket.io')
 const path = require('path');
+var fs = require( 'fs' );
 
 const app = express();
 // Heroku uses the $PORT environment variable, and it is dynamic
@@ -18,6 +20,8 @@ app.use(bodyParser.json())
 
 
 require('./routes/gameRoutes')(app);
+
+app.use('/.well-known', express.static('.well-known'));
 
 // Serve the static files from the React app
 app.use('/', express.static('build'));
@@ -43,7 +47,13 @@ db.once('open', () => {
 	console.log( '+++ connected to mongoose')
 })
 
-var server = http.createServer(app);
+var server = http.createServer({
+    // key: fs.readFileSync('./test_key.key'),
+    // cert: fs.readFileSync('./test_cert.crt'),
+    // ca: fs.readFileSync('./test_ca.crt'),
+    requestCert: false,
+    rejectUnauthorized: false
+},app);
 var io = socketServer(server);
 server.listen(PORT)
 
