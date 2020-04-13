@@ -3,17 +3,29 @@ import {
   createStore,
 } from "redux";
 import thunk from "redux-thunk";
+import { compose } from "redux";
 
 import reducers from "./reducers";
 
 
-const enhancers = [applyMiddleware(thunk)];
+// const enhancers = [applyMiddleware(thunk)];
+//
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//
+//
+// export const store = createStore(
+//   reducers,
+//   {},
+//   composeEnhancers(...enhancers)
+// );
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
+const middleware = applyMiddleware(thunk);
+
+const composeEnhancers =
+	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
-  reducers,
-  {},
-  composeEnhancers(...enhancers)
+	reducers,
+	composeEnhancers(middleware)
 );

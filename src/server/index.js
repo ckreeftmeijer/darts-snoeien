@@ -18,7 +18,8 @@ app.use(bodyParser.json())
 require('./routes/gameRoutes')(app);
 
 // Serve the static files from the React app
-app.use('/', express.static('build'));
+// app.use('/', express.static('build'));
+app.use(express.static(__dirname))  //here is important thing - no static directory, because all static :)
 
 // Handles any requests that don't match the ones above
 

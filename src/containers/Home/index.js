@@ -22,8 +22,8 @@ export const Home = ({ games, createGame, fetchGames }) => {
 
   return (
     <div className="container">
-      <div className="col-5" />
-      <div className="col-2 new-game padded-v--lg">
+      <div className="col-5 col-sm-4" />
+      <div className="col-2 col-sm-4 new-game padded-v--lg">
         <div>
           Maak een nieuwe game
           <input
@@ -45,7 +45,7 @@ export const Home = ({ games, createGame, fetchGames }) => {
           <hr style={{ color: 'white', width: 'calc(100% - 6px)'}} />
           <div>
             {
-              games && games.length > 0
+              games && games.length > 0 && Array.isArray(games)
                 ? games.map((game, i) =>
                     <Link
                       key={i}
