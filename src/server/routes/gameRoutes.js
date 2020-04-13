@@ -5,9 +5,7 @@ const Game = mongoose.model('Game');
 module.exports = (app) => {
 
   app.get(`/api/games`, async (req, res) => {
-    console.log(1)
     let games = await Game.find();
-    console.log(2)
     return res.status(200).send(games);
   });
 

@@ -6,7 +6,9 @@ const socketServer =require('socket.io')
 
 const app = express();
 
+mongoose.set('useFindAndModify', false)
 const gameModel = require('../models/GameModel')
+const Game = mongoose.model('Game');
 
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
@@ -40,41 +42,11 @@ io.on('connection', function (socket) {
 		console.log('Disconnected - '+ socket.id);
 	});
 
-  socket.on('addItem',(addData)=>{
-		var todoItem = new gameModel({
-			itemId:addData.id,
-			item:addData.item,
-			completed: addData.completed
-		})
-
-		todoItem.save((err,result)=> {
-			if (err) {console.log("---Gethyl ADD NEW ITEM failed!! " + err)}
-			else {
-				// connections.forEach((currentConnection)=>{
-				// 	currentConnection.emit('itemAdded',addData)
-				// })
-				io.emit('itemAdded',addData)
-
-				console.log({message:"+++Gethyl ADD NEW ITEM worked!!"})
-			}
-		})
-	})
-
-	socket.on('markItem',(markedItem)=>{
-		var condition   = {itemId:markedItem.id},
-			updateValue = {completed:markedItem.completed}
-
-		gameModel.update(condition,updateValue,(err,result)=>{
-			if (err) {console.log("---Gethyl MARK COMPLETE failed!! " + err)}
-			else {
-				// connections.forEach((currentConnection)=>{
-				// 	currentConnection.emit('itemMarked',markedItem)
-				// })
-				io.emit('itemMarked',markedItem)
-
-				console.log({message:"+++Gethyl MARK COMPLETE worked!!"})
-			}
-		})
+	socket.on('updateGame', (game) => {
+		console.log(game)
+		Game.findByIdAndUpdate(game._id, game).then(
+			data => io.emit('gameUpdated', game)
+		)
 	})
 
 });

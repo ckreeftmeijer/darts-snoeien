@@ -38,6 +38,7 @@ const Calculator = ({ setScore }) => {
         {
           [...new Array(10)].map((user, i) =>
             <div
+              key={`button-${i}`}
               className="calculator__key"
               onClick={() => addNumber(9 - i)}
             >

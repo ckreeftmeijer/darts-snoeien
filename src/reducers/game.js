@@ -3,7 +3,7 @@ import {
   FETCH_GAMES, FETCH_GAMES_SUCCESS, FETCH_GAMES_FAILURE,
   DELETE_GAME, RESET_GAME,
   CREATE_GAME, CREATE_GAME_SUCCESS, CREATE_GAME_FAILURE,
-  UPDATE_PLAYER_SCORE
+  UPDATE_GAME
 } from "../actions/Game";
 
 const INITIAL_STATE = {
@@ -95,7 +95,7 @@ export default function(state = INITIAL_STATE, action) {
           ...state,
         }
 
-      case UPDATE_PLAYER_SCORE:
+      case UPDATE_GAME:
         const { player, index } = action.payload
         let current = state.game.currentPlayer
         const players = [...state.game.players]
@@ -107,11 +107,7 @@ export default function(state = INITIAL_STATE, action) {
         }
         return {
           ...state,
-          game: {
-            ...state.game,
-            players,
-            currentPlayer: current
-          }
+          game: action.payload
         }
 
     default:

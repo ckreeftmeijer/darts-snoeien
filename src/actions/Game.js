@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const DELETE_GAME = "DELETE_GAME";
 export const RESET_GAME = "RESET_GAME";
 
@@ -15,7 +16,7 @@ export const FETCH_GAMES = "FETCH_GAMES";
 export const FETCH_GAMES_SUCCESS = "FETCH_GAMES_SUCCESS";
 export const FETCH_GAMES_FAILURE = "FETCH_GAMES_FAILURE";
 
-export const UPDATE_PLAYER_SCORE = "UPDATE_PLAYER_SCORE";
+export const UPDATE_GAME = "UPDATE_GAME";
 
 export const fetchGame = (name) => dispatch => {
   dispatch({
@@ -77,8 +78,38 @@ export const resetGame = id => ({
   payload: id
 });
 
-
-export const updatePlayerScore = (player, index) => ({
-  type: UPDATE_PLAYER_SCORE,
-  payload: {player, index}
+export const updateGame = (game) => ({
+  type: UPDATE_GAME,
+  payload: game
 })
+
+/***************************************************************************************** */
+/* Async Action items using - Sockets													   */
+/***************************************************************************************** */
+
+export const updateGameSocket = (socket, game) => {
+	return (dispatch) => {
+	    socket.emit('updateGame',game)
+	}
+}
+
+export const addNewItemSocket = (socket,id,item) => {
+	return (dispatch) => {
+		let postData = {
+				id:id+1,
+				item:item,
+				completed:false
+		     }
+	    socket.emit('addItem',postData)
+	}
+}
+
+export const markItemCompleteSocket = (socket,id,completedFlag) => {
+	return (dispatch) => {
+		let postData = {
+				id:id,
+				completed:completedFlag
+		     }
+		socket.emit('markItem',postData)
+	}
+}
