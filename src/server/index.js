@@ -2,10 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const http = require('http')
-var https = require('https');
+const https = require('https');
 const socketServer =require('socket.io')
 const path = require('path');
-var fs = require( 'fs' );
+const fs = require( 'fs' );
 
 const app = express();
 // Heroku uses the $PORT environment variable, and it is dynamic
@@ -22,6 +22,7 @@ app.use(bodyParser.json())
 require('./routes/gameRoutes')(app);
 
 app.use('/.well-known', express.static('.well-known'));
+app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 // Serve the static files from the React app
 app.use('/', express.static('build'));
@@ -47,13 +48,25 @@ db.once('open', () => {
 	console.log( '+++ connected to mongoose')
 })
 
-var server = http.createServer({
-    // key: fs.readFileSync('./test_key.key'),
-    // cert: fs.readFileSync('./test_cert.crt'),
-    // ca: fs.readFileSync('./test_ca.crt'),
-    requestCert: false,
-    rejectUnauthorized: false
-},app);
+// var server = https.createServer({
+//     key: fs.readFileSync('/etc/letsencrypt/live/domain.name/privkey.pem'),
+//     cert: fs.readFileSync('/etc/letsencrypt/live/domain.name/cert.pem'),
+//     ca: fs.readFileSync('/etc/letsencrypt/live/domain.name/chain.pem'),
+//     requestCert: false,
+//     rejectUnauthorized: false
+// },app);
+// Certificate
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8');
+
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
+
+var server = https.createServer(credentials,app);
 var io = socketServer(server);
 server.listen(PORT)
 
