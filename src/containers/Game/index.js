@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import io from "socket.io-client";
+import Confetti from 'react-dom-confetti';
 
 import Player from '../Player'
 import Calculator from '../../components/Calculator'
+import Reset from './reset.svg'
 
 import { fetchGame, updateGameSocket, resetGame, updateGame } from '../../actions/Game'
 
@@ -16,7 +18,10 @@ let socket
 class Game extends React.Component {
   constructor(props) {
     super(props)
-    socket = io.connect(window.location.hostname, {secure: true});
+    this.state = {
+      showConfetti: false
+    }
+    socket = io.connect(window.location.hostname === 'localhost' ? "http://localhost:8080" : window.location.hostname, {secure: true});
 
     socket.on("gameUpdated", res => {
       this.props.updateGame(res)
@@ -40,7 +45,7 @@ class Game extends React.Component {
     if (!currentPlayer) return
     const newScore = currentPlayer.score - score
     if (newScore < 0) return
-    if (newScore === 0) this.finishGame()
+    if (newScore === 0) return this.finishGame()
     game.players[current].score = newScore
     if (current === 1) {
       current = 0
@@ -52,23 +57,50 @@ class Game extends React.Component {
   }
 
   finishGame = () => {
-    alert('doner')
+    this.setState({ showConfetti: true}, () =>
+      setTimeout(() => this.setState({ showConfetti: true}),100)
+    )
+    this.resetGame()
+  }
+
+  resetGame = () => {
+    const { game } = this.props
+    game.players.forEach((player, i) => {
+      const updatedPlayer = {...player}
+      updatedPlayer.score = 501
+      game.players[i] = updatedPlayer
+    })
+    game.currentPlayer = 0
+    this.props.updateGameSocket(socket, game)
   }
 
   render() {
+    const { showConfetti } = this.state
     const { game } = this.props
-
     return (
       <div className="container">
-        <div className="col-sm-1 col-md-4" />
-        <div className="col-sm-12 col-md-4 new-game padded-v--lg">
-          {game ? game.name : 'No game found'}
+        <div className="col-4 col-xs-1 col-sm-2 col-lg-3" />
+        <div className="col-4 col-xs-12 col-sm-8 col-lg-6  new-game padded-v--lg">
+          {game
+            ?
+              <div>
+                {game.name}
+                <span onClick={() => this.resetGame()}>
+                  <img
+                    className="reset-icon"
+                    src={Reset}
+                    alt="reset game icon"
+                  />
+                </span>
+              </div>
+            : 'No game found'}
           <div className="game-container container">
             {
               game
                 ?
                   game.players.map((player, i) =>
                     <div key={i} className={`col-${12 / game.players.length}`}>
+                      <Confetti active={game.currentPlayer === i && showConfetti} />
                       <Player
                         name={player.name}
                         isCurrentPlayer={game.currentPlayer === i}
