@@ -30,7 +30,10 @@ app.get('/', function (req, res) {
 // MONGOOSE CONNECT
 // ===========================================================================
 const connectionString = 'mongodb+srv://ckreeftmeijer:Chr1$tiaan@cluster0-cocre.azure.mongodb.net/test?retryWrites=true&w=majority'
-mongoose.connect(connectionString, { useNewUrlParser: true })
+mongoose.connect(connectionString, {
+  useNewUrlParser: true ,
+  useUnifiedTopology: true,
+})
 
 var db = mongoose.connection
 db.on('error', ()=> {console.log( '--- FAILED to connect to mongoose')})
