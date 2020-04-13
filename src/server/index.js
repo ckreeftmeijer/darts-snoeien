@@ -23,7 +23,6 @@ app.use(bodyParser.json())
 require('./routes/gameRoutes')(app);
 
 app.use('/.well-known', express.static('.well-known'));
-app.use(express.static(__dirname, { dotfiles: 'allow' } ));
 
 // Serve the static files from the React app
 app.use('/', express.static('build'));
