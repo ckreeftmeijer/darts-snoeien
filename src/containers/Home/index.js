@@ -21,9 +21,9 @@ export const Home = ({ games, createGame, fetchGames }) => {
   }
 
   return (
-    <div className="container">
-      <div className="col-5 col-sm-4" />
-      <div className="col-2 col-sm-4 new-game padded-v--lg">
+    <div className="container padded text-center">
+      <div className="col-5 col-sm-1 col-md-4" />
+      <div className="col-2 col-sm-12 col-md-4 new-game padded-v--lg">
         <div>
           Maak een nieuwe game
           <input

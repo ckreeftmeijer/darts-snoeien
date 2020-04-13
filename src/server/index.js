@@ -6,6 +6,7 @@ const socketServer =require('socket.io')
 const path = require('path');
 
 const app = express();
+// Heroku uses the $PORT environment variable, and it is dynamic
 const PORT = process.env.PORT || 8080;
 
 mongoose.set('useFindAndModify', false)

@@ -65,21 +65,20 @@ $box-shadow: 0 2px 10px 1px rgba(0,0,0,0.15);
 /* Breakpoints */
 $min-width-support: 320px !default;
 
-$break-xxs: 425px !default; /* Mobile */
-$break-xs: 768px !default; /* Tablet */
-$break-sm: 1024px !default; /* Desktop */
-$break-md: 1280px !default;
-$break-lg: 1366px !default;
-$break-xl: 1440px !default;
-$break-xxl: 1900px !default;
-
-$break-xxs-max: 424px !default; /* Mobile */
-$break-xs-max: 767px !default; /* Tablet */
-$break-sm-max: 1023px !default; /* Desktop */
-$break-md-max: 1279px !default;
-$break-lg-max: 1365px !default;
-$break-xl-max: 1439px !default;
-$break-xxl-max: 1899px !default;
+/* Breakpoints */
+$min-width-support: 320px !default;
+$break-xxs: 0 !default;
+$break-xs: 0 !default;
+$break-sm: 425px !default; /* Mobile */
+$break-md: 768px !default; /* Tablet */
+$break-lg: 1024px !default; /* Desktop */
+$break-xl: 1200px !default;
+$break-xxl: 1920px !default;
+$break-sm-max: 424px !default;
+$break-md-max: 767px !default;
+$break-lg-max: 1023px !default;
+$break-xl-max: 1199px !default;
+$break-xxl-max: 1919px !default;
 
 
 

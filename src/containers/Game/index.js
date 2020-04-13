@@ -60,8 +60,8 @@ class Home extends React.Component {
 
     return (
       <div className="container">
-        <div className="col-5 col-sm-4" />
-        <div className="col-2 col-sm-4 new-game padded-v--lg">
+        <div className="col-5 col-sm-1 col-md-4" />
+        <div className="ccol-2 col-sm-12 col-md-4 new-game padded-v--lg">
           {game ? game.name : 'No game found'}
           <div className="game-container container">
             {
