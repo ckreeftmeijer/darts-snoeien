@@ -9,7 +9,8 @@ const fs = require( 'fs' );
 
 const app = express();
 // Heroku uses the $PORT environment variable, and it is dynamic
-const PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.PORT || 8080;
+const HTTPS_PORT = process.env.PORT || 8443;
 
 mongoose.set('useFindAndModify', false)
 const gameModel = require('../models/GameModel')
@@ -56,9 +57,9 @@ db.once('open', () => {
 //     rejectUnauthorized: false
 // },app);
 // Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/chain.pem', 'utf8');
 
 const credentials = {
 	key: privateKey,
@@ -66,9 +67,11 @@ const credentials = {
 	ca: ca
 };
 
-var server = https.createServer(credentials,app);
-var io = socketServer(server);
-server.listen(PORT)
+var httpsServer = https.createServer(credentials,app);
+var httpServer = http.createServer(app);
+var io = socketServer(httpServer);
+httpServer.listen(HTTP_PORT);
+httpsServer.listen(HTTPS_PORT);
 
 
 /***************************************************************************************** */
