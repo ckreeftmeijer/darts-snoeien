@@ -10,7 +10,6 @@ const fs = require( 'fs' );
 const app = express();
 // Heroku uses the $PORT environment variable, and it is dynamic
 const HTTP_PORT = process.env.PORT || 8080;
-const HTTPS_PORT = process.env.PORT || 8443;
 
 mongoose.set('useFindAndModify', false)
 const gameModel = require('../models/GameModel')
@@ -48,29 +47,26 @@ db.once('open', () => {
 	console.log( '+++ connected to mongoose')
 })
 
-// var server = https.createServer({
-//     key: fs.readFileSync('/etc/letsencrypt/live/domain.name/privkey.pem'),
-//     cert: fs.readFileSync('/etc/letsencrypt/live/domain.name/cert.pem'),
-//     ca: fs.readFileSync('/etc/letsencrypt/live/domain.name/chain.pem'),
-//     requestCert: false,
-//     rejectUnauthorized: false
-// },app);
+
 // Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/chain.pem', 'utf8');
-
-const credentials = {
-	key: privateKey,
-	cert: certificate,
-	ca: ca
-};
-
-var httpsServer = https.createServer(credentials,app);
+// const privateKey = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/privkey.pem', 'utf8');
+// const certificate = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/cert.pem', 'utf8');
+// const ca = fs.readFileSync('/etc/letsencrypt/live/snoeien-darts.herokuapp.com/chain.pem', 'utf8');
+//
+// const credentials = {
+// 	key: privateKey,
+// 	cert: certificate,
+// 	ca: ca
+// };
+//
+// var httpsServer = https.createServer(credentials,app);
 var httpServer = http.createServer(app);
 var io = socketServer(httpServer);
 httpServer.listen(HTTP_PORT);
-httpsServer.listen(HTTPS_PORT);
+
+//Paid version: sudo heroku certs:add --type sni /etc/letsencrypt/live/snoeien-darts.herokuapp.com/fullchain.pem /etc/letsencrypt/live/snoeien-darts.herokuapp.com/privkey.pem
+// const HTTPS_PORT = process.env.PORT || 8443;
+// httpsServer.listen(HTTPS_PORT);
 
 
 /***************************************************************************************** */
