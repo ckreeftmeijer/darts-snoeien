@@ -12,7 +12,7 @@ export const Player = ({ isCurrentPlayer, name, score }) => {
         {name}
         <span className={`player__current ${isCurrentPlayer ? 'player__current--active' : ''}`} />
       </div>
-      {score}
+      <div className="larger bold">{score}</div>
     </div>
   )
 }
