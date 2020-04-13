@@ -6,6 +6,7 @@ const socketServer =require('socket.io')
 const path = require('path');
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
 mongoose.set('useFindAndModify', false)
 const gameModel = require('../models/GameModel')
@@ -52,7 +53,7 @@ db.once('open', () => {
 
 var server = http.createServer(app);
 var io = socketServer(server);
-server.listen(8080)
+server.listen(PORT)
 
 
 /***************************************************************************************** */
