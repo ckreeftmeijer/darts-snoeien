@@ -16,7 +16,7 @@ let socket
 class Game extends React.Component {
   constructor(props) {
     super(props)
-    socket = io.connect("https://localhost:8080", {secure: true});
+    socket = io.connect("http://localhost:8080", {secure: true});
 
     socket.on("gameUpdated", res => {
       this.props.updateGame(res)
@@ -60,8 +60,8 @@ class Game extends React.Component {
 
     return (
       <div className="container">
-        <div className="col-5 col-sm-1 col-md-4" />
-        <div className="ccol-2 col-sm-12 col-md-4 new-game padded-v--lg">
+        <div className="col-sm-1 col-md-4" />
+        <div className="col-sm-12 col-md-4 new-game padded-v--lg">
           {game ? game.name : 'No game found'}
           <div className="game-container container">
             {

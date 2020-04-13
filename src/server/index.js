@@ -65,5 +65,4 @@ io.on('connection', function (socket) {
 			data => io.emit('gameUpdated', game)
 		)
 	})
-
 });
