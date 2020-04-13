@@ -92,24 +92,3 @@ export const updateGameSocket = (socket, game) => {
 	    socket.emit('updateGame',game)
 	}
 }
-
-export const addNewItemSocket = (socket,id,item) => {
-	return (dispatch) => {
-		let postData = {
-				id:id+1,
-				item:item,
-				completed:false
-		     }
-	    socket.emit('addItem',postData)
-	}
-}
-
-export const markItemCompleteSocket = (socket,id,completedFlag) => {
-	return (dispatch) => {
-		let postData = {
-				id:id,
-				completed:completedFlag
-		     }
-		socket.emit('markItem',postData)
-	}
-}

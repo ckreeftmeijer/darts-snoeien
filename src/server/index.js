@@ -52,20 +52,25 @@ httpServer.listen(HTTP_PORT);
 
 
 /***************************************************************************************** */
-/* Socket logic starts here																   */
+/* Socket logic starts here																                                 */
 /***************************************************************************************** */
-const connections = [];
+
+// const connections = [];
 io.on('connection', function (socket) {
+
+  socket.on('joinRoom', (name) => {
+    socket.join(name)
+  })
+
 	console.log("Connected to Socket!!"+ socket.id)
-	connections.push(socket)
+	// connections.push(socket)
 	socket.on('disconnect', function(){
 		console.log('Disconnected - '+ socket.id);
 	});
 
 	socket.on('updateGame', (game) => {
-		console.log(game)
 		Game.findByIdAndUpdate(game._id, game).then(
-			data => io.emit('gameUpdated', game)
+			data => io.sockets.in(game.name).emit('gameUpdated', game)
 		)
 	})
 });

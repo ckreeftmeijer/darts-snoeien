@@ -21,7 +21,12 @@ class Game extends React.Component {
     this.state = {
       showConfetti: false
     }
-    socket = io.connect(window.location.hostname === 'localhost' ? "http://localhost:8080" : window.location.hostname, {secure: true});
+    socket = io.connect(
+      window.location.hostname === 'localhost'
+        ? "http://localhost:8080"
+        : window.location.hostname,
+      { secure: true }
+    );
 
     socket.on("gameUpdated", res => {
       this.props.updateGame(res)
@@ -30,7 +35,10 @@ class Game extends React.Component {
 
   componentDidMount() {
     const name = this.props.match.params.name
-    if (name) this.props.fetchGame(name)
+    if (name) {
+      this.props.fetchGame(name)
+      socket.emit('updateGame', name)
+    }
   }
 
   componentWillUnmount() {
