@@ -16,7 +16,7 @@ let socket
 class Game extends React.Component {
   constructor(props) {
     super(props)
-    socket = io.connect("http://localhost:8080", {secure: true});
+    socket = io.connect("https://localhost:8080", {secure: true});
 
     socket.on("gameUpdated", res => {
       this.props.updateGame(res)
