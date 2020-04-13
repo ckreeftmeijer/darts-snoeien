@@ -13,10 +13,10 @@ import './styles.scss'
 
 let socket
 
-class Home extends React.Component {
+class Game extends React.Component {
   constructor(props) {
     super(props)
-    socket = io.connect("http://localhost:8080");
+    socket = io.connect("http://localhost:8080", {secure: true});
 
     socket.on("gameUpdated", res => {
       this.props.updateGame(res)
@@ -104,4 +104,4 @@ export default compose(
     resetGame,
     updateGame
   })
-)(Home);
+)(Game);
