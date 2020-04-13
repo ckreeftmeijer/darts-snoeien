@@ -37,7 +37,7 @@ class Game extends React.Component {
     const name = this.props.match.params.name
     if (name) {
       this.props.fetchGame(name)
-      socket.emit('updateGame', name)
+      socket.emit('joinRoom', name)
     }
   }
 
