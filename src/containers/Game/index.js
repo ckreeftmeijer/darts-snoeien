@@ -9,6 +9,8 @@ import Player from '../Player'
 import Calculator from '../../components/Calculator'
 import Reset from './reset.svg'
 
+import showFinishes from '../../utils/showFinishes'
+
 import { fetchGame, updateGameSocket, resetGame, updateGame } from '../../actions/Game'
 
 import './styles.scss'
@@ -19,7 +21,8 @@ class Game extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showConfetti: false
+      showConfetti: false,
+      changingPlayer: false,
     }
     socket = io.connect(
       window.location.hostname === 'localhost'
@@ -52,9 +55,10 @@ class Game extends React.Component {
     const currentPlayer = game.players[current]
     if (!currentPlayer) return
     const newScore = currentPlayer.score - score
-    if (newScore < 0) return
+    if (newScore > 1) {
+      game.players[current].score = newScore
+    }
     if (newScore === 0) return this.finishGame()
-    game.players[current].score = newScore
     if (current === 1) {
       current = 0
     } else {
@@ -62,6 +66,9 @@ class Game extends React.Component {
     }
     game.currentPlayer = current
     this.props.updateGameSocket(socket, game)
+    this.setState({ changingPlayer: true}, () => {
+      setTimeout(() => this.setState({ changingPlayer: false }), 100)
+    })
   }
 
   finishGame = () => {
@@ -83,7 +90,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { showConfetti } = this.state
+    const { showConfetti, changingPlayer } = this.state
     const { game } = this.props
     return (
       <div className="container">
@@ -119,6 +126,7 @@ class Game extends React.Component {
                 : null
             }
             <hr className="col-12" style={{ color: 'white', width: 'calc(100% - 6px)'}} />
+            <div className="col-12 text-center" style={{ height: '30px' }}>{game && !changingPlayer ? showFinishes(game.players[game.currentPlayer].score) : ''}</div>
             <div className="col-12">
               <Calculator setScore={(score) => this.handleScoreUpdate(score)} />
             </div>

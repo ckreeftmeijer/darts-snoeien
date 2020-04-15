@@ -1,5 +1,6 @@
 .calculator {
   transform: scale(-1, 1);
+  user-select: none;
 
   &__key {
     color: white;
