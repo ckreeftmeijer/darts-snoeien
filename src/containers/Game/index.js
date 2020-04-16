@@ -8,6 +8,7 @@ import Confetti from 'react-dom-confetti';
 import Player from '../Player'
 import Calculator from '../../components/Calculator'
 import Reset from './reset.svg'
+import Loader from '../../images/loader.svg'
 
 import showFinishes from '../../utils/showFinishes'
 
@@ -23,6 +24,7 @@ class Game extends React.Component {
     this.state = {
       showConfetti: false,
       changingPlayer: false,
+      currentFinish: 'No outs possible'
     }
     socket = io.connect(
       window.location.hostname === 'localhost'
@@ -41,6 +43,16 @@ class Game extends React.Component {
     if (name) {
       this.props.fetchGame(name)
       socket.emit('joinRoom', name)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { game } = this.props;
+
+    if (!prevProps.game && game) {
+      showFinishes(game.players[game.currentPlayer].score).then(score =>
+          this.setState({ currentFinish: score })
+      )
     }
   }
 
@@ -64,6 +76,10 @@ class Game extends React.Component {
     } else {
       current = 1
     }
+
+    showFinishes(game.players[current].score).then(score =>{
+        this.setState({ currentFinish: score })
+    })
     game.currentPlayer = current
     this.props.updateGameSocket(socket, game)
     this.setState({ changingPlayer: true}, () => {
@@ -90,15 +106,16 @@ class Game extends React.Component {
   }
 
   render() {
-    const { showConfetti, changingPlayer } = this.state
-    const { game } = this.props
+    const { showConfetti, changingPlayer, currentFinish } = this.state
+    const { game, loading } = this.props
+
     return (
       <div className="container">
         <div className="col-4 col-xs-1 col-sm-2 col-lg-3" />
         <div className="col-4 col-xs-12 col-sm-8 col-lg-6  new-game padded-v--lg">
           {game
             ?
-              <div>
+              <div className="larger bold">
                 {game.name}
                 <span onClick={() => this.resetGame()}>
                   <img
@@ -108,7 +125,9 @@ class Game extends React.Component {
                   />
                 </span>
               </div>
-            : 'No game found'}
+            : loading
+              ? <img src={Loader} width="30px" alt="spinning loader" />
+              : 'No game found'}
           <div className="game-container container">
             {
               game
@@ -123,10 +142,16 @@ class Game extends React.Component {
                       />
                     </div>
                   )
-                : null
+                : <div style={{height: "60px"}} />
             }
             <hr className="col-12" style={{ color: 'white', width: 'calc(100% - 6px)'}} />
-            <div className="col-12 text-center" style={{ height: '30px' }}>{game && !changingPlayer ? showFinishes(game.players[game.currentPlayer].score) : ''}</div>
+            <div className="col-12 text-center" style={{ height: '30px' }}>
+              {
+                game && !changingPlayer
+                  ? currentFinish
+                  : ''
+              }
+            </div>
             <div className="col-12">
               <Calculator setScore={(score) => this.handleScoreUpdate(score)} />
             </div>
@@ -140,7 +165,8 @@ class Game extends React.Component {
 
 function mapStateToProps({ game }) {
   return {
-    game: game.game
+    game: game.game,
+    loading: game.loading.game
   };
 }
 

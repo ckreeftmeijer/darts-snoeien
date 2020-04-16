@@ -1,75 +1,77 @@
-const showFinishes = (score) => {
-  if (score > 170 || score <= 1) {
-    return 'No outs possible'
-  } else {
-
-    const outs = []
-    const scoreAmountArray = [...new Array(score + 1)]
-    scoreAmountArray.forEach((s, i) => outs.push(i))
-
-    const combinations = getCombinations(outs, 3)
-
-    const ascArr = []
-    const possibleOuts = []
-
-    combinations.forEach((combi, i) => {
-      const strArr = combi.split(' ')
-      const tempArr = strArr.map(item => Number(item) >= 0 ? Number(item) : item);
-
-      tempArr[2] = tempArr[2] * 2
-
-      const trimmedCombi = combi.trim()
-      const ascValue = getAsciiValue(trimmedCombi)
-
-      const bogeyNumbers = [41,43,44,46,47,49,52,53,55,56,58,59]
-
-      if (
-        !(tempArr.some(el =>
-           (el > 20 && (el % 2 !== 0 && el % 3 !== 0 && el !== 25)) ||
-           el > 60
-            // || el === 59 || el === 58 || el === 56 || el === 55 || el === 53 || el === 52 || el === 49 || el === 47 || el === 46
-            || bogeyNumbers.includes(el)
-        )) &&
-        ((tempArr[2] <= 40 && tempArr[2] % 2 === 0) || tempArr[2] === 50) &&
-        tempArr.reduce((a, b) => a + b, 0) === score && !ascArr.includes(ascValue)
-      ) {
-
-        possibleOuts.push(combi)
-      }
-    })
-
-    let bestFinish
-
-    const oneDart = possibleOuts.find(out =>
-      out[0] === '0' && out[2] === '0'
-    )
-
-    const twoDarts = possibleOuts.filter(out =>
-      out[0] === '0'
-    )
-
-    if (oneDart) {
-      bestFinish = oneDart
-    } else if (twoDarts && twoDarts.length > 0) {
-      const twoArray = twoDarts.map(x => x.split(' '))
-      const hasUnderBull = twoArray.find(x => x[2] < 25)
-
-      if (hasUnderBull) {
-        bestFinish = hasUnderBull.join(' ')
-      } else {
-        bestFinish = twoArray[0].join(' ')
-      }
-    } else if (possibleOuts && possibleOuts.length > 0) {
-      const finish =  possibleOuts[0].split(' ')
-      const sorted = finish[1] >= finish[0] ? move(finish) : finish
-      bestFinish = sorted.join(' ')
+export const  showFinishes = (score) => {
+  //73 71
+  return new Promise((resolve, reject) => {
+    if (score > 170 || score <= 1) {
+      return 'No outs possible'
     } else {
-      bestFinish = undefined
+
+      const outs = []
+      const scoreAmountArray = [...new Array(score + 1)]
+      scoreAmountArray.forEach((s, i) => outs.push(i))
+
+      const combinations = getCombinations(outs, 3)
+
+      const ascArr = []
+      const possibleOuts = []
+
+      combinations.forEach((combi, i) => {
+        const strArr = combi.split(' ')
+        const tempArr = strArr.map(item => Number(item) >= 0 ? Number(item) : item);
+
+        tempArr[2] = tempArr[2] * 2
+
+        const trimmedCombi = combi.trim()
+        const ascValue = getAsciiValue(trimmedCombi)
+
+        const bogeyNumbers = [41,43,44,46,47,49,52,53,55,56,58,59]
+
+        if (
+          !(tempArr.some(el =>
+             (el > 20 && (el % 2 !== 0 && el % 3 !== 0 && el !== 25)) ||
+             el > 60
+              || bogeyNumbers.includes(el)
+          )) &&
+          ((tempArr[2] <= 40 && tempArr[2] % 2 === 0) || tempArr[2] === 50) &&
+          tempArr.reduce((a, b) => a + b, 0) === score && !ascArr.includes(ascValue)
+        ) {
+
+          possibleOuts.push(combi)
+        }
+      })
+
+      let bestFinish
+
+      const oneDart = possibleOuts.find(out =>
+        out[0] === '0' && out[2] === '0'
+      )
+
+      const twoDarts = possibleOuts.filter(out =>
+        out[0] === '0'
+      )
+
+      if (oneDart) {
+        bestFinish = oneDart
+      } else if (twoDarts && twoDarts.length > 0) {
+        const twoArray = twoDarts.map(x => x.split(' '))
+        const hasUnderBull = twoArray.find(x => x[2] < 25)
+
+        if (hasUnderBull) {
+          bestFinish = hasUnderBull.join(' ')
+        } else {
+          bestFinish = twoArray[0].join(' ')
+        }
+      } else if (possibleOuts && possibleOuts.length > 0) {
+        const finish =  possibleOuts[0].split(' ')
+        const sorted = finish[1] >= finish[0] ? move(finish) : finish
+        bestFinish = sorted.join(' ')
+      } else {
+        bestFinish = undefined
+      }
+
+      resolve(formatFinish(bestFinish))
+
     }
-
-    return formatFinish(bestFinish)
-
-  }
+  })
 }
 
 const formatFinish = (finish) => {
@@ -77,10 +79,12 @@ const formatFinish = (finish) => {
   const finishArr = finish.split(' ')
 
   const formatted = finishArr.map((score, i) => {
+    console.log(score)
     if (score === '0') return ''
-    if (score > 40 && score !== '50') return `T${score / 3}`
-    if (i === 2 && score === '25') return 'B'
+    if (i === 2 && score === '25') return 'DB'
+    if (score === '25') return 'B'
     if (i === 2) return `D${score}`
+    if (((score > 40 && score !== '50') || (score > 20 && score % 2 !== 0))) return `T${score / 3}`
     if (score > 20) return `D${score / 2}`
     return score
   })
