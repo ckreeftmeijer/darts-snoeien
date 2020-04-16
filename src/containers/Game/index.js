@@ -11,6 +11,7 @@ import Reset from './reset.svg'
 import Loader from '../../images/loader.svg'
 
 import showFinishes from '../../utils/showFinishes'
+import { getFinish } from '../../data/dartsCheckouts'
 
 import { fetchGame, updateGameSocket, resetGame, updateGame } from '../../actions/Game'
 
@@ -50,9 +51,7 @@ class Game extends React.Component {
     const { game } = this.props;
 
     if (!prevProps.game && game) {
-      showFinishes(game.players[game.currentPlayer].score).then(score =>
-          this.setState({ currentFinish: score })
-      )
+      this.setState({ currentFinish: getFinish(game.players[game.currentPlayer].score) })
     }
   }
 
@@ -77,9 +76,8 @@ class Game extends React.Component {
       current = 1
     }
 
-    showFinishes(game.players[current].score).then(score =>{
-        this.setState({ currentFinish: score })
-    })
+    this.setState({ currentFinish: getFinish(game.players[current].score) })
+
     game.currentPlayer = current
     this.props.updateGameSocket(socket, game)
     this.setState({ changingPlayer: true}, () => {
@@ -106,7 +104,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { showConfetti, changingPlayer, currentFinish } = this.state
+    const { showConfetti, currentFinish } = this.state
     const { game, loading } = this.props
 
     return (
@@ -147,9 +145,7 @@ class Game extends React.Component {
             <hr className="col-12" style={{ color: 'white', width: 'calc(100% - 6px)'}} />
             <div className="col-12 text-center" style={{ height: '30px' }}>
               {
-                game && !changingPlayer
-                  ? currentFinish
-                  : ''
+                  game ? currentFinish : ''
               }
             </div>
             <div className="col-12">

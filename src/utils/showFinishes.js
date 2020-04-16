@@ -25,6 +25,10 @@ export const  showFinishes = (score) => {
 
         const bogeyNumbers = [41,43,44,46,47,49,52,53,55,56,58,59]
 
+        // if (tempArr[0] === 25 || tempArr[1] === 25) {
+        //   return
+        // }
+
         if (
           !(tempArr.some(el =>
              (el > 20 && (el % 2 !== 0 && el % 3 !== 0 && el !== 25)) ||
@@ -81,7 +85,7 @@ const formatFinish = (finish) => {
   const formatted = finishArr.map((score, i) => {
     console.log(score)
     if (score === '0') return ''
-    if (i === 2 && score === '25') return 'DB'
+    if (i === 2 && score === '25') return 'BULL'
     if (score === '25') return 'B'
     if (i === 2) return `D${score}`
     if (((score > 40 && score !== '50') || (score > 20 && score % 2 !== 0))) return `T${score / 3}`
